@@ -49,10 +49,10 @@ func main() {
 		watches = append(watches, watch)
 	}
 
-	MonitorWatches(watches, redisPool, statsdClient)
+	MonitorWatches(watches, redisPool)
 }
 
-func MonitorWatches(watches []Watch, redisPool *pool.Pool, statsdClient statsd.Statsd) {
+func MonitorWatches(watches []Watch, redisPool *pool.Pool) {
 	dueChan := make(chan Watch, len(watches))
 	for _, watch := range watches {
 		go func(watch Watch) {
@@ -65,13 +65,13 @@ func MonitorWatches(watches []Watch, redisPool *pool.Pool, statsdClient statsd.S
 
 	for {
 		toRun := <- dueChan
-		go ExecuteWatch(toRun, redisPool, statsdClient)
+		go ExecuteWatch(toRun, redisPool)
 	}
 }
 
 func ExecuteWatch(watch Watch, redisPool *pool.Pool) {
 	statsdClient := statsd.NewStatsdClient("udp", *statsdAddr)
-	err = statsdClient.CreateSocket()
+	err := statsdClient.CreateSocket()
 	if err != nil {
 		log.Println("Failed to create statsd socket:", err)
 		return
