@@ -20,7 +20,7 @@ type Metric struct {
 }
 
 type IMetric struct {
-	Name string `json:"string"`
+	Name string `json:"name"`
 	Key string `json:"key"`
 	Interval int `json:"report-interval"`
 }

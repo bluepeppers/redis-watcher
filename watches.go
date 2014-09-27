@@ -3,7 +3,6 @@ package main
 import (
 	"time"
 	"strings"
-	"log"
 	"strconv"
 	"fmt"
 
@@ -66,15 +65,14 @@ func (iw InternalWatch) StatsdTarget() string {
 }
 
 func (iw InternalWatch) ProcessReply(reply *redis.Reply) (val int, err error) {
-	lines, err := reply.ListBytes()
+	str, err := reply.Str()
 	if err != nil {
 		return
 	}
-	for _, byteLine := range lines {
+	for _, byteLine := range strings.Split(str, "\r\n") {
 		line := string(byteLine)
 		byParts := strings.Split(line, ":")
 		if len(byParts) != 2 {
-			log.Print("Skipping invalid line from INFO: ", line)
 			continue
 		}
 

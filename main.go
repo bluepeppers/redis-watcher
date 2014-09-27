@@ -100,7 +100,7 @@ func ExecuteWatch(watch Watch, redisPool *pool.Pool, statsdClient statsd.Statsd)
 
 	err = statsdClient.Gauge(watch.StatsdTarget(), int64(val))
 	if err != nil {
-		log.Print("Failed to store value: ", err)
+		log.Println("Failed to store value:", err)
 		return
 	}
 }
