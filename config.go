@@ -14,7 +14,7 @@ type Config struct {
 }
 
 type Metric struct {
-	Name string `json:"string"`
+	Name string `json:"name"`
 	Command string `json:"command"`
 	Interval int `json:"report-interval"`
 }
