@@ -70,7 +70,7 @@ func MonitorWatches(watches []Watch, redisPool *pool.Pool) {
 }
 
 func ExecuteWatch(watch Watch, redisPool *pool.Pool) {
-	statsdClient := statsd.NewStatsdClient("udp", *statsdAddr)
+	statsdClient := statsd.NewStatsdClient(*statsdAddr, "udp")
 	err := statsdClient.CreateSocket()
 	if err != nil {
 		log.Println("Failed to create statsd socket:", err)
