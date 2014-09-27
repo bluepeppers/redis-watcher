@@ -77,8 +77,12 @@ func (iw InternalWatch) ProcessReply(reply *redis.Reply) (val int, err error) {
 		}
 
 		if byParts[0] == iw.key {
-			val, err = strconv.Atoi(byParts[1])
-			return
+			valf, err := strconv.ParseFloat(byParts[1], 64)
+			if err != nil {
+				return 0, err
+			}
+			val = int(valf)
+			return val, err
 		}
 	}
 	err = fmt.Errorf("No key ", iw.key, " found in INFO reply")

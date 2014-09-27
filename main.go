@@ -110,4 +110,6 @@ func ExecuteWatch(watch Watch, redisPool *pool.Pool) {
 		log.Println("Failed to store value:", err)
 		return
 	}
+
+	log.Println(watch.StatsdTarget(), "->", int64(val))
 }
