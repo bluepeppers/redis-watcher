@@ -15,7 +15,7 @@ a...
 Config file
 -----------
 
-# Basic command reporting
+### Basic command reporting
 
 The original use case of redis-watcher was to regularly report the
 sizes of queues (I use # for comment in the examples; remove them to
@@ -46,7 +46,7 @@ By default, when a metric is run, the result (which is expected to be
 a scalar) will be stored using a gauge in statsd. I would be happy to
 remove both these limitations; I just haven't found a need to yet.
 
-# Internal reporting
+#### Internal reporting
 
 You can configure redis-watcher to report the results of the `INFO`
 redis command. This looks like
