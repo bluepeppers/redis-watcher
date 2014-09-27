@@ -38,7 +38,6 @@ func main() {
 	}
 
 	redisPool := pool.NewOrEmptyPool("tcp", *redisAddr, 12)
-	statsdClient := statsd.NewStatsdClient("udp", *statsdAddr)
 
 	watches := make([]Watch, 0, len(conf.Metrics) + len(conf.Internal))
 	for _, metric := range conf.Metrics {
@@ -70,7 +69,15 @@ func MonitorWatches(watches []Watch, redisPool *pool.Pool, statsdClient statsd.S
 	}
 }
 
-func ExecuteWatch(watch Watch, redisPool *pool.Pool, statsdClient statsd.Statsd) {
+func ExecuteWatch(watch Watch, redisPool *pool.Pool) {
+	statsdClient := statsd.NewStatsdClient("udp", *statsdAddr)
+	err = statsdClient.CreateSocket()
+	if err != nil {
+		log.Println("Failed to create statsd socket:", err)
+		return
+	}
+	defer statsdClient.Close()
+
 	conn, err := redisPool.Get()
 	if err != nil {
 		log.Println("Failed to redis conn: ", err)
