@@ -1,0 +1,8 @@
+{
+    "internal": [
+        {
+            "name": "redis.connected_clients",
+            "key": "connected_clients"
+        }
+    ]
+}
