@@ -8,7 +8,7 @@ import (
 	"os"
 	"io"
 
-	"github.com/quipo/statsd"
+	"github.com/cactus/go-statsd-client/statsd"
 	"github.com/fzzy/radix/extra/pool"
 )
 
@@ -70,10 +70,9 @@ func MonitorWatches(watches []Watch, redisPool *pool.Pool) {
 }
 
 func ExecuteWatch(watch Watch, redisPool *pool.Pool) {
-	statsdClient := statsd.NewStatsdClient(*statsdAddr, "udp")
-	err := statsdClient.CreateSocket()
+	statsdClient, err := statsd.New(*statsdAddr, "")
 	if err != nil {
-		log.Println("Failed to create statsd socket:", err)
+		log.Println("Failed to create statsd client:", err)
 		return
 	}
 	defer statsdClient.Close()
@@ -105,7 +104,7 @@ func ExecuteWatch(watch Watch, redisPool *pool.Pool) {
 		return
 	}
 
-	err = statsdClient.Gauge(watch.StatsdTarget(), int64(val))
+	err = statsdClient.Gauge(watch.StatsdTarget(), int64(val), 1)
 	if err != nil {
 		log.Println("Failed to store value:", err)
 		return
