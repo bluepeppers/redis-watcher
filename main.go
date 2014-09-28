@@ -56,6 +56,7 @@ func MonitorWatches(watches []Watch, redisPool *pool.Pool) {
 	dueChan := make(chan Watch, len(watches))
 	for _, watch := range watches {
 		go func(watch Watch) {
+			dueChan <- watch
 			for {
 				time.Sleep(watch.Interval())
 				dueChan <- watch
